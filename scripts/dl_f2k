@@ -10,7 +10,12 @@
 #
 
 dlf2k () {
-    wget https://www.foobar2000.org/download -nH --cut-dirs=3 -r -l 2 -A exe -R '*beta*.exe' &> /dev/null
+    wget --accept "*beta*.exe" https://www.foobar2000.org/download -nH --cut-dirs=3 -r -l 2 &> /dev/null
+    for fnts in andalemo.ttf arialbd.ttf arialbi.ttf ariali.ttf arial.ttf ariblk.ttf comicbd.ttf comic.ttf courbd.ttf courbi.ttf couri.ttf cour.ttf georgiab.ttf georgiai.ttf georgia.ttf georgiaz.ttf impact.ttf l_10646.ttf lucon.ttf micross.ttf symbol.ttf tahomabd.ttf tahoma.ttf timesbd.ttf timesbi.ttf timesi.ttf times.ttf trebucbd.ttf trebucbi.ttf trebucit.ttf trebuc.ttf verdanab.ttf verdanai.ttf verdana.ttf verdanaz.ttf webdings.ttf wingding.ttf
+    do
+    wget https://github.com/caarlos0-graveyard/msfonts/blob/master/fonts/$fnts?raw=true -P share/wine/fonts &> /dev/null
+    mv share/wine/fonts/$fnts?raw=true share/wine/fonts/$fnts
+    done
 }
 
 dli7z16x64 () {
@@ -35,6 +40,7 @@ mkf2k () {
 }
 
 mkdsk () {
+ver=$(wget http://www.foobar2000.org/download -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $4,$5,$6}'|sed 1d|sed 's|v||;s|</a><br||;s| ||;s| ||;s|b|-b|g')
 cat > foobar2000.desktop <<'EOF1'
 [Desktop Entry]
 Name=foobar2000
@@ -42,7 +48,7 @@ GenericName=Audio player
 Comment=Simple and powerful audio player.
 Actions=PlayPause;Stop;Next;Prev;Random;Config
 Encoding=UTF-8
-Version=1.3.17
+Version=
 Type=Application
 Terminal=false
 Icon=${SNAP}/usr/share/pixmaps/foobar2000.png
@@ -76,6 +82,7 @@ Exec=foobar2000 -rand
 Name=Preferences
 Exec=foobar2000 -config
 EOF1
+sed -i -e 's|Version=|Version='"$ver"'|g' foobar2000.desktop
 }
 
 dlf2k
