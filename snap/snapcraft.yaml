@@ -86,7 +86,7 @@ parts:
     override-build: |
       snapcraftctl build
       set -ex
-      ver=$(wget http://www.foobar2000.org/download -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $4,$5,$6}'|sed 1d|sed 's|v||;s|</a><br||;s| ||;s| ||;s|b|-b|g')
+      ver=$(wget http://www.foobar2000.org/download -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $4,$5,$6}'|sed '1d;3d'|sed 's|v||;s|</a><br||;s| ||;s| ||;s|b|-b|g;s|</a>||g')
       echo $ver > $SNAPCRAFT_STAGE/version
       ./dl_f2k
     stage:
