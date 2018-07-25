@@ -10,7 +10,8 @@
 #
 
 dlf2k () {
-    wget --accept "*beta*.exe" https://www.foobar2000.org/download -nH --cut-dirs=3 -r -l 2 &> /dev/null
+    ver=$(wget http://www.foobar2000.org/old -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $3}' | sed 's|v||;s|</a><br||' | head -1)
+    wget --accept "*$ver.exe" https://www.foobar2000.org/old -nH --cut-dirs=3 -r -l 2 &> /dev/null
     for fnts in andalemo.ttf arialbd.ttf arialbi.ttf ariali.ttf arial.ttf ariblk.ttf comicbd.ttf comic.ttf courbd.ttf courbi.ttf couri.ttf cour.ttf georgiab.ttf georgiai.ttf georgia.ttf georgiaz.ttf impact.ttf l_10646.ttf lucon.ttf micross.ttf symbol.ttf tahomabd.ttf tahoma.ttf timesbd.ttf timesbi.ttf timesi.ttf times.ttf trebucbd.ttf trebucbi.ttf trebucit.ttf trebuc.ttf verdanab.ttf verdanai.ttf verdana.ttf verdanaz.ttf webdings.ttf wingding.ttf
     do
     wget https://github.com/caarlos0-graveyard/msfonts/blob/master/fonts/$fnts?raw=true -P share/wine/fonts &> /dev/null
@@ -32,7 +33,7 @@ dli7z16x64 () {
 }
 
 mkf2k () {
-    7z x "foobar2000_v1.4*.exe" -x'!$PLUGINSDIR' -x'!$R0' -x'!icons' -x'!foobar2000 Shell Associations Updater.exe' -x'!uninstall.exe' -o"usr/share/foobar2000" &> /dev/null
+    7z x "foobar2000_v1.3*.exe" -x'!$PLUGINSDIR' -x'!$R0' -x'!icons' -x'!foobar2000 Shell Associations Updater.exe' -x'!uninstall.exe' -o"usr/share/foobar2000" &> /dev/null
     touch usr/share/foobar2000/portable_mode_enabled
     find "usr" -type d -execdir chmod 755 {} +
     mkdir -p usr/share/pixmaps && mkdir -p usr/share/applications && mkdir bin
@@ -40,7 +41,6 @@ mkf2k () {
 }
 
 mkdsk () {
-ver=$(wget http://www.foobar2000.org/download -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $4,$5,$6}'|sed '1d;3d'|sed 's|v||;s|</a><br||;s| ||;s| ||;s|b|-b|g;s|</a>||g')
 cat > foobar2000.desktop <<'EOF1'
 [Desktop Entry]
 Name=foobar2000
