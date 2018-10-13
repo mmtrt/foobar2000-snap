@@ -180,7 +180,7 @@ fi
 if [ ! -d $WINEPREFIX ]; then
 mkdir -p $WINEPREFIX/drive_c/windows/Fonts
 find /usr/share/fonts/ -type f -name "*.ttf" -exec ln -vs "{}" $WINEPREFIX/drive_c/windows/Fonts/ \; &>/dev/null
-$WINETRICKS --unattended wmp9
+$WINETRICKS --unattended wmp9 vcrun2017
 rm -rf $XDG_CACHE_HOME/winetricks
 fi
 
