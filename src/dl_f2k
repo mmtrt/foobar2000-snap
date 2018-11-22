@@ -10,7 +10,7 @@
 #
 
 dlf2k () {
-    ver=$(wget http://www.foobar2000.org/old -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $3}' | sed 's|v||;s|</a><br||' | head -1)
+    ver=$(wget http://www.foobar2000.org/old -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $3}' | sed 's|v||;s|</a><br||' | sed '1d' | head -1)
     wget --accept "*$ver.exe" https://www.foobar2000.org/old -nH --cut-dirs=3 -r -l 2 &> /dev/null
 }
 
