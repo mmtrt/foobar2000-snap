@@ -178,10 +178,12 @@ append_dir LD_LIBRARY_PATH $WPR/usr/lib/$ARCH/mesa-egl
 [ "$SNAP_ARCH" = "amd64" ] && append_dir LD_LIBRARY_PATH $WPR/usr/lib/i386-linux-gnu/mesa
 [ "$SNAP_ARCH" = "amd64" ] && append_dir LD_LIBRARY_PATH $WPR/usr/lib/i386-linux-gnu/mesa-egl
 
-# Tell libGL where to find the drivers
+# Tell libGL and libva where to find the drivers
 export LIBGL_DRIVERS_PATH=$WPR/usr/lib/$ARCH/dri
 [ "$SNAP_ARCH" = "amd64" ] && append_dir LIBGL_DRIVERS_PATH $WPR/usr/lib/i386-linux-gnu/dri
 append_dir LD_LIBRARY_PATH $LIBGL_DRIVERS_PATH
+export LIBVA_DRIVERS_PATH=$WPR/usr/lib/$ARCH/dri
+[ "$SNAP_ARCH" = "amd64" ] && append_dir LIBVA_DRIVERS_PATH $WPR/usr/lib/i386-linux-gnu/dri
 
 # Workaround in snapd for proprietary nVidia drivers mounts the drivers in
 # /var/lib/snapd/lib/gl that needs to be in LD_LIBRARY_PATH
@@ -192,6 +194,9 @@ append_dir LD_LIBRARY_PATH /var/lib/snapd/lib/gl
 # Pulseaudio export
 append_dir LD_LIBRARY_PATH $WPR/usr/lib/$ARCH/pulseaudio
 [ "$SNAP_ARCH" = "amd64" ] && append_dir LD_LIBRARY_PATH $WPR/usr/lib/i386-linux-gnu/pulseaudio
+
+# Alsa export
+export ALSA_CONFIG_PATH="$WPR/usr/share/alsa/alsa.conf"
 
 # EGL vendor files on glvnd enabled systems
 [ -d /var/lib/snapd/lib/glvnd/egl_vendor.d ] && \
