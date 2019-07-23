@@ -291,8 +291,11 @@ fi
 # Gdk-pixbuf loaders
 export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache
 export GDK_PIXBUF_MODULEDIR=$WPR/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
-if [ -f $WPR/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ] && [ ! -f "${GDK_PIXBUF_MODULE_FILE}" ]; then
-  $WPR/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+if [ $needs_update = true ]; then
+  rm -f $GDK_PIXBUF_MODULE_FILE
+  if [ -f $WPR/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ] && [ ! -f "${GDK_PIXBUF_MODULE_FILE}" ]; then
+    async_exec $WPR/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+  fi
 fi
 
 # foobar2000 env
