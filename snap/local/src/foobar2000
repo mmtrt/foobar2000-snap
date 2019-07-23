@@ -345,10 +345,8 @@ done
 
 if [ "$1" == "winecfg" ] ; then
   wine winecfg
-else
-if [ -z "$1" ] ; then
+elif [ -z "$1" ] ; then
   wine "$progHome/$progBin"
 else
   wine start /unix "$progHome/$progBin" "${args[@]}"
-fi
 fi
