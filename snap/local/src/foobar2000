@@ -106,6 +106,21 @@ function append_dir() {
   fi
 }
 
+# async
+declare -A PIDS
+
+function async_exec() {
+  $@ &
+  PIDS[$!]=$@
+}
+
+function wait_for_async_execs() {
+  for i in ${!PIDS[@]}
+  do
+    wait $i && continue || echo "ERROR: ${PIDS[$i]} exited abnormally with status $?"
+  done
+}
+
 # On Fedora $SNAP is under /var and there is some magic to map it to /snap.
 # # We need to handle that case and reset $SNAP
 SNAP=`echo $SNAP | sed -e "s|/var/lib/snapd||g"`
@@ -265,7 +280,7 @@ if [ $needs_update = true ]; then
   # included by the system fontconfig configuration: namely the
   # etc/fonts/conf.d/50-user.conf file.
   mkdir -p $XDG_CONFIG_HOME/fontconfig
-  make_user_fontconfig > $XDG_CONFIG_HOME/fontconfig/fonts.conf
+  async_exec make_user_fontconfig > $XDG_CONFIG_HOME/fontconfig/fonts.conf
 fi
 
 # Gdk-pixbuf loaders
@@ -313,6 +328,8 @@ chkstmp=$(cat $WINEPREFIX/.update-timestamp | grep disable | wc -l)
 fi
 
 [ $needs_update = true ] && echo "SNAP_DESKTOP_LAST_REVISION=$SNAP_REVISION" > $SNAP_USER_DATA/.last_revision
+
+wait_for_async_execs
 
 # Switches: use -something instead of /something to avoid confusion with Unix paths
 # Also convert Unix paths to Windows paths.
