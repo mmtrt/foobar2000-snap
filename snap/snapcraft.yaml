@@ -33,6 +33,7 @@ plugs:
 
 environment:
   WINEDLLOVERRIDES: "mscoree,mshtml="         # Prevent pop-ups about Wine Mono and Wine Gecko
+  WINEARCH: "win32"
   TRICKS: "wmp9 vcrun2017"
 
 apps:
