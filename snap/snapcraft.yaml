@@ -1,6 +1,5 @@
 name: foobar2000
-version: latest
-version-script: cat $SNAPCRAFT_STAGE/version
+title: foobar2000 (Wine)
 summary: foobar2000 is an advanced freeware audio player.
 description: |
  Features
@@ -12,6 +11,7 @@ description: |
    *Full ReplayGain support.
    *Customizable keyboard shortcuts.
    *Open component architecture allowing third-party developers to extend functionality of the player.
+adopt-info: foobar2000
 
 confinement: strict
 grade: stable
@@ -30,16 +30,50 @@ plugs:
     interface: content
     target: $SNAP/wine-platform
     default-provider: wine-platform-5-stable
-  icon-themes:
-    interface: content
-    target: $SNAP/data-dir/icons
-    default-provider: gtk-common-themes
+
+environment:
+  WINEDLLOVERRIDES: "mscoree,mshtml="         # Prevent pop-ups about Wine Mono and Wine Gecko
+  TRICKS: "wmp9 vcrun2017"
 
 apps:
   foobar2000:
-    command: foobar2000
+    extensions: [ gnome-3-28 ]
+    command: bin/sommelier run-exe
+    environment:
+      RUN_EXE: "$SNAP_USER_DATA/foobar2000/foobar2000.exe"
+      SOMMELIER_KEEP_CWD: 1  # Don't change the working directory so relative paths still work
+    plugs:
+      - audio-playback
+      - opengl
+      - home
+      - network
+      - hardware-observe
+      - process-control
+      - cups-control
+      - removable-media
     desktop: usr/share/applications/foobar2000.desktop
-    plugs: [ wayland, x11, opengl, home, desktop, desktop-legacy, network, pulseaudio, hardware-observe, process-control, cups-control, removable-media, icon-themes, system-observe, wine-runtime, wine-5-stable ]
+  # The wine command can be used to run applications inside the wine
+  # environment that this snap uses.
+  #
+  # For example, users can configure the wine environment of this snap
+  # by running `myapp.wine winecfg`.
+  wine:
+    extensions: [ gnome-3-28 ]
+    command: bin/sommelier
+    plugs:
+      - home
+      - network
+      - hardware-observe
+      - process-control
+      - cups-control
+      - removable-media
+  # The winetricks command can be used to run winetricks inside the wine
+  # environment that this snap uses.
+  winetricks:
+    extensions: [ gnome-3-28 ]
+    command: bin/sommelier winetricks
+    plugs:
+      - network
 
 parts:
   foobar2000:
@@ -49,11 +83,18 @@ parts:
       snapcraftctl build
       set -ex
       ver=$(wget http://www.foobar2000.org/download -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $4}'|sed '2,3d;s|v||;s|</a><br/>||;s|</a>||')
-      echo $ver > $SNAPCRAFT_STAGE/version
+      snapcraftctl set-version "$ver"
       ./dl_f2k
     stage:
       - bin
       - usr
       - wine-platform
       - wine-runtime
+      - sommelier
     build-packages: [wget]
+  # The sommelier script helps you snap Windows applications using Wine. It
+  # initializes and configures Wine and installs the Windows application.
+  sommelier:
+    plugin: make
+    source: https://github.com/snapcrafters/sommelier-core.git
+    source-branch: "1.0"
