@@ -56,27 +56,27 @@ MimeType=audio/aac;audio/x-ape;audio/basic;audio/mp4;audio/mpeg;audio/mpegurl;au
 
 [Desktop Action PlayPause]
 Name=Play/Pause
-Exec=foobar2000 -playpause
+Exec=foobar2000 /playpause
 
 [Desktop Action Stop]
 Name=Stop
-Exec=foobar2000 -stop
+Exec=foobar2000 /stop
 
 [Desktop Action Next]
 Name=Next
-Exec=foobar2000 -next
+Exec=foobar2000 /next
 
 [Desktop Action Prev]
 Name=Prev
-Exec=foobar2000 -prev
+Exec=foobar2000 /prev
 
 [Desktop Action Random]
 Name=Random
-Exec=foobar2000 -rand
+Exec=foobar2000 /rand
 
 [Desktop Action Config]
 Name=Preferences
-Exec=foobar2000 -config
+Exec=foobar2000 /config
 EOF1
 sed -i -e 's|Version=|Version='"$ver"'|g' foobar2000.desktop
 }
