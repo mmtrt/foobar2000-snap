@@ -98,4 +98,4 @@ parts:
   sommelier:
     plugin: make
     source: https://github.com/galgalesh/sommelier-core.git
-    source-branch: "lunar"
+    source-branch: "wine-light-theme"
