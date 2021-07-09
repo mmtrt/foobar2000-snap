@@ -4,6 +4,9 @@ name: CI
 
 # Controls when the workflow will run
 on:
+  # Build at 00:00 on every 3rd day-of-month.
+  schedule:
+    - cron: "0 0 */3 * *"
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
@@ -31,4 +34,4 @@ jobs:
         with:
           store_login: ${{ secrets.STORE_LOGIN }}
           snap: ${{ steps.build.outputs.snap }}
-          release: edge,stable
+          release: stable
