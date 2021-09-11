@@ -1,4 +1,4 @@
-name: check
+name: check-beta-release
 
 on:
   schedule:
@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: get-latest-version
       run: |
-        VERSION="$(curl 2>/dev/null -vs http://www.foobar2000.org/download | grep foobar2000_v | awk '{print $4}'|sed '2,3d;s|v||;s|</a><br/>||;s|</a>||')"
+        VERSION="$(curl 2>/dev/null -vs http://www.foobar2000.org/download | grep foobar2000_v | awk '{print $4,$5,$6}'|sed '1d;3d'|sed 's|v||;s|</a><br/>||;s| ||;s| ||;s|b|-b|g;s|</a>||g')"
         last=$(tail -n1 .build.stamp | awk '{print $4}')
 
         if [ "$last" != "$VERSION" ]; then
