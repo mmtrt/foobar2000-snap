@@ -1,4 +1,4 @@
-name: Check for new releases
+name: check
 
 on:
   schedule:
@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: get-latest-version
       run: |
-        VERSION="$(wget http://www.foobar2000.org/download -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $4}'|sed '2,3d;s|v||;s|</a><br/>||;s|</a>||')"
+        VERSION="$(curl 2>/dev/null -vs http://www.foobar2000.org/download | grep foobar2000_v | awk '{print $4}'|sed '2,3d;s|v||;s|</a><br/>||;s|</a>||')"
         last=$(tail -n1 .build.stamp | awk '{print $4}')
 
         if [ "$last" != "$VERSION" ]; then
