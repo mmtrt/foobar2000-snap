@@ -13,10 +13,10 @@ jobs:
     - name: get-latest-version
       run: |
         VERSION="$(wget 2>/dev/null http://www.foobar2000.org/download -qSO- | grep foobar2000_v | awk '{print $4}'|sed '2,3d;s|v||;s|</a><br/>||;s|</a>||')"
-        last=$(tail -n1 .build.stamp | awk '{print $4}')
+        last=$(tail -n1 .build.s | awk '{print $4}')
 
         if [ "$last" != "$VERSION" ]; then
-          echo "$(date -u --rfc-3339=seconds) Version $VERSION" >> .build.stamp
+          echo "$(date -u --rfc-3339=seconds) Version $VERSION" >> .build.s
         fi
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
@@ -33,10 +33,10 @@ jobs:
     - name: get-latest-version
       run: |
         VERSION="$(wget 2>/dev/null http://www.foobar2000.org/download -qSO- | grep foobar2000_v | awk '{print $4,$5,$6}'|sed '1d;3d'|sed 's|v||;s|</a><br/>||;s| ||;s| ||;s|b|-b|g;s|</a>||g')"
-        last=$(tail -n1 .build-beta.stamp | awk '{print $4}')
+        last=$(tail -n1 .build.b | awk '{print $4}')
 
         if [ "$last" != "$VERSION" ]; then
-          echo "$(date -u --rfc-3339=seconds) Version $VERSION" >> .build-beta.stamp
+          echo "$(date -u --rfc-3339=seconds) Version $VERSION" >> .build.b
         fi
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
