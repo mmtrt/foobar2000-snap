@@ -1,5 +1,5 @@
 name: foobar2000
-title: foobar2000 (Wine)
+title: foobar2000 (WINE)
 summary: foobar2000 is an advanced freeware audio player.
 description: |
  Features
@@ -26,23 +26,22 @@ plugs:
     interface: content
     target: $SNAP/wine-runtime
     default-provider: wine-platform-runtime
-  wine-5-stable:
+  wine-6-stable:
     interface: content
     target: $SNAP/wine-platform
-    default-provider: wine-platform-5-stable
+    default-provider: wine-platform-6-stable
 
 environment:
   WINEDLLOVERRIDES: "mscoree,mshtml="         # Prevent pop-ups about Wine Mono and Wine Gecko
   WINEARCH: "win32"
   TRICKS: "wmp9 vcrun2017"
+  RUN_EXE: "$SNAP_USER_DATA/foobar2000/foobar2000.exe"
+  SOMMELIER_KEEP_CWD: "1"  # Don't change the working directory so relative paths still work
 
 apps:
   foobar2000:
     extensions: [ gnome-3-28 ]
     command: bin/sommelier run-exe
-    environment:
-      RUN_EXE: "$SNAP_USER_DATA/foobar2000/foobar2000.exe"
-      SOMMELIER_KEEP_CWD: 1  # Don't change the working directory so relative paths still work
     plugs:
       - audio-playback
       - opengl
