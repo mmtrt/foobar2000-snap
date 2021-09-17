@@ -32,11 +32,12 @@ plugs:
     default-provider: wine-platform-6-stable
 
 environment:
-  WINEDLLOVERRIDES: "mscoree,mshtml="         # Prevent pop-ups about Wine Mono and Wine Gecko
+  WINEDLLOVERRIDES: "mscoree,mshtml="  # Prevent pop-ups about Wine Mono and Wine Gecko
   WINEARCH: "win32"
   TRICKS: "wmp9 vcrun2017"
   RUN_EXE: "$SNAP_USER_DATA/foobar2000/foobar2000.exe"
   SOMMELIER_KEEP_CWD: "1"  # Don't change the working directory so relative paths still work
+  NO_AT_BRIDGE: "1"  # Fix yad error Failed to connect to socket /tmp/dbus-xxx: No such file or directory
 
 apps:
   foobar2000:
