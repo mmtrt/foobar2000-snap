@@ -93,6 +93,7 @@ parts:
       - wine-platform
       - wine-runtime
       - sommelier
+    prime:
       - meta
     build-packages: [wget]
   # The sommelier script helps you snap Windows applications using Wine. It
