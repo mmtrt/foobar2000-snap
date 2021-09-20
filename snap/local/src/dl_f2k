@@ -77,10 +77,27 @@ Name=Preferences
 Exec=foobar2000 /config
 EOF1
 sed -i -e 's|Version=|Version='"$ver"'|g' foobar2000.desktop
+
+cat > foobar2000_enqueue.desktop <<'EOF1'
+[Desktop Entry]
+Name=Enqueue in foobar2000
+Comment=Simple and powerful audio player.
+Encoding=UTF-8
+Version=
+Type=Application
+NoDisplay=true
+Icon=${SNAP}/usr/share/pixmaps/foobar2000.png
+Exec=foobar2000 /add %F
+StartupWMClass=foobar2000.exe
+Categories=AudioVideo;Audio;Player;
+MimeType=audio/aac;audio/x-ape;audio/basic;audio/mp4;audio/mpeg;audio/mpegurl;audio/vorbis;audio/x-flac;audio/x-mp2;audio/x-mp3;audio/x-mpegurl;audio/x-ms-wma;audio/x-oggflac;audio/x-speex;audio/x-vorbis;audio/x-wav;audio/m3u;audio/x-aifc;audio/x-aiffc;audio/x-aiff;audio/x-musepack;audio/x-wavpack;x-content/audio-player;audio/x-matroska;audio/x-vorbis+ogg;inode/directory;
+
+EOF1
+sed -i -e 's|Version=|Version='"$ver"'|g' foobar2000_enqueue.desktop
 }
 
 dlf2k
 dli7z16x64
 mkdsk
 mkf2k
-mv pre-install sommelier/hooks && mv foobar2000.desktop usr/share/applications && mv foobar2000.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform} $SNAPCRAFT_PART_INSTALL
+mv pre-install sommelier/hooks && mv foobar2000*.desktop usr/share/applications && mv foobar2000.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform} $SNAPCRAFT_PART_INSTALL
