@@ -100,4 +100,4 @@ dlf2k
 dli7z16x64
 mkdsk
 mkf2k
-mv pre-install sommelier/hooks && mv foobar2000.desktop usr/share/applications && mv foobar2000*.desktop meta/gui && mv foobar2000.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform,meta} $SNAPCRAFT_PART_INSTALL && ls -al $SNAPCRAFT_PART_INSTALL && cp -R -p meta $SNAPCRAFT_PART_PRIME && ls -al $SNAPCRAFT_PART_PRIME
+mv pre-install sommelier/hooks && mv foobar2000.desktop usr/share/applications && mv foobar2000*.desktop meta/gui && mv foobar2000.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform,meta} $SNAPCRAFT_PART_INSTALL 
