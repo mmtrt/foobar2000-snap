@@ -2,7 +2,6 @@
 Name=Enqueue in foobar2000
 Comment=Simple and powerful audio player.
 Encoding=UTF-8
-Version=
 Type=Application
 NoDisplay=true
 Icon=${SNAP}/usr/share/pixmaps/foobar2000.png
