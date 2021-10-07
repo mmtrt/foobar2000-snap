@@ -12,6 +12,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         token: ${{ secrets.PAT }}
+        ref: ${{ github.head_ref }}
     - name: get-latest-version
       run: |
         VERSION="$(wget 2>/dev/null http://www.foobar2000.org/download -qSO- | grep foobar2000_v | awk '{print $4}'|sed '2,3d;s|v||;s|</a><br/>||;s|</a>||')"
@@ -32,6 +33,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         token: ${{ secrets.PAT }}
+        ref: ${{ github.head_ref }}
     - name: get-latest-version
       run: |
         VERSION="$(wget 2>/dev/null http://www.foobar2000.org/download -qSO- | grep foobar2000_v | awk '{print $4,$5,$6}'|sed '1d;3d'|sed 's|v||;s|</a><br/>||;s| ||;s| ||;s|b|-b|g;s|</a>||g')"
