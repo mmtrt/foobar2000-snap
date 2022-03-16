@@ -44,7 +44,7 @@ jobs:
             echo "$(date -u --rfc-3339=seconds) Version $VERSION" >> .build.b
           fi
         else
-          exit
+          exit 1
         fi
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
