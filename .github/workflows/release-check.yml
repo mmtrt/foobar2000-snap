@@ -44,7 +44,7 @@ jobs:
             echo "$(date -u --rfc-3339=seconds) Version $VERSION" >> .build.b
           fi
         else
-          exit 1
+          echo "No beta update released." 
         fi
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
