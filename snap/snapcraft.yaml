@@ -82,9 +82,10 @@ parts:
   enable-armhf:
     plugin: nil
     override-build: |
-      snapcraftctl build
-      dpkg --add-architecture armhf
-      apt update
+      if [ "$SNAPCRAFT_ARCH_TRIPLET" = "aarch64-linux-gnu" ]; then
+        dpkg --add-architecture armhf
+        apt update
+      fi
 
   ppa:
     plugin: nil
