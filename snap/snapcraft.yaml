@@ -95,9 +95,7 @@ parts:
       apt update
     build-packages:
       - wget
-    stage-packages:
-      - box86-arm-generic
- 
+
   foobar2000:
     plugin: nil
     source: ./snap/local/src
@@ -114,6 +112,10 @@ parts:
       - wine-runtime
       - sommelier
     build-packages: [wget]
+    stage-packages:
+      - on arm64:
+        - box86-generic-arm
+
   # The sommelier script helps you snap Windows applications using Wine. It
   # initializes and configures Wine and installs the Windows application.
   sommelier:
