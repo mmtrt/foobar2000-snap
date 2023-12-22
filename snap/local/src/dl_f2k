@@ -14,23 +14,12 @@ dlf2k () {
     wget https://www.foobar2000.org/encoderpack -nH --cut-dirs=3 -r -l 2 -A exe &> /dev/null
 }
 
-dli7z16x64 () {
-    for dldebs in https://launchpad.net/ubuntu/+source/p7zip/16.02+dfsg-4/+build/13091326/+files/p7zip_16.02+dfsg-4_amd64.deb https://launchpad.net/ubuntu/+source/p7zip/16.02+dfsg-4/+build/13091326/+files/p7zip-full_16.02+dfsg-4_amd64.deb 
-    do
-    wget $dldebs &> /dev/null
-    done
-
-    for pkgdebins in p7zip_16.02+dfsg-4_amd64.deb p7zip-full_16.02+dfsg-4_amd64.deb
-    do
-    sudo apt install ./$pkgdebins -y &> /dev/null
-    rm $pkgdebins
-    done
-}
-
 mkf2k () {
     mkdir -p ./{wine-runtime,wine-platform,bin} && mkdir -p sommelier/hooks && mkdir -p usr/share/{pixmaps,applications}
-    7z x "foobar2000_*.exe" -x'!$PLUGINSDIR' -x'!$R0' -x'!icons' -x'!foobar2000 Shell Associations Updater.exe' -x'!uninstall.exe' -o"usr/share/foobar2000" &> /dev/null
-    7z x "Free_*.exe" -x'!$PLUGINSDIR' -o"usr/share/foobar2000/encoders" &> /dev/null
+    wget -qO- https://www.7-zip.org/a/7z2301-linux-x64.tar.xz | tar -J -xvf - 7zz
+    ./7zz x "foobar2000_*.exe" -x'!$PLUGINSDIR' -x'!$R0' -x'!icons' -x'!foobar2000 Shell Associations Updater.exe' -x'!uninstall.exe' -o"usr/share/foobar2000" &> /dev/null
+    ./7zz x "Free_*.exe" -x'!$PLUGINSDIR' -o"usr/share/foobar2000/encoders" &> /dev/null
+    rm 7zz
     touch usr/share/foobar2000/portable_mode_enabled
     find "usr" -type d -execdir chmod 755 {} +
 }
@@ -80,7 +69,6 @@ sed -i -e 's|Version=|Version='"$ver"'|g' foobar2000.desktop
 }
 
 dlf2k
-dli7z16x64
 mkdsk
 mkf2k
 mv pre-install sommelier/hooks && mv foobar2000.desktop usr/share/applications && mv foobar2000.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform} $SNAPCRAFT_PART_INSTALL
