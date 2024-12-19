@@ -15,23 +15,20 @@ dlf2k () {
 }
 
 dli7z16x64 () {
-    for dldebs in https://launchpad.net/ubuntu/+source/p7zip/16.02+dfsg-4/+build/13091326/+files/p7zip_16.02+dfsg-4_amd64.deb https://launchpad.net/ubuntu/+source/p7zip/16.02+dfsg-4/+build/13091326/+files/p7zip-full_16.02+dfsg-4_amd64.deb 
-    do
-    wget $dldebs &> /dev/null
-    done
-
-    for pkgdebins in p7zip_16.02+dfsg-4_amd64.deb p7zip-full_16.02+dfsg-4_amd64.deb
-    do
-    sudo apt install ./$pkgdebins -y &> /dev/null
-    rm $pkgdebins
-    done
+    ARCHITECTURE=$(dpkg --print-architecture)
+    if [ "${ARCHITECTURE}" = "amd64" ]; then
+     wget -qO- https://www.7-zip.org/a/$(wget -qO- https://www.7-zip.org | grep -Eo -m2 '7z.*.exe"' | tail -1 | sed 's/.exe"/-linux-x64.tar.xz/') | tar -J -xvf - 7zz
+    else
+     echo "ERROR! No amd64 system found. Failing the build here."
+     exit 1
+    fi
 }
 
 mkf2k () {
     mkdir -p ./{wine-runtime,wine-platform,bin} && mkdir -p sommelier/hooks && mkdir -p usr/share/{pixmaps,applications}
-    7z x "foobar2000_v*.exe" -x'!$PLUGINSDIR' -x'!$R0' -x'!icons' -x'!foobar2000 Shell Associations Updater.exe' -x'!uninstall.exe' -o"usr/share/foobar2000" &> /dev/null
-    7z x "Free_*.exe" -x'!$PLUGINSDIR' -o"usr/share/foobar2000/encoders" &> /dev/null
-    touch usr/share/foobar2000/portable_mode_enabled
+    ./7zz x -aos "foobar2000_v*.exe" -x'!$PLUGINSDIR' -x'!$R0' -x'!icons' -x'!foobar2000 Shell Associations Updater.exe' -x'!uninstall.exe' -o"usr/share/foobar2000" &> /dev/null
+    ./7zz x -aos "Free_*.exe" -x'!$PLUGINSDIR' -o"usr/share/foobar2000/encoders" &> /dev/null
+    touch usr/share/foobar2000/portable_mode_enabled ; rm 7zz
     find "usr" -type d -execdir chmod 755 {} +
 }
 
@@ -83,4 +80,4 @@ dlf2k
 dli7z16x64
 mkdsk
 mkf2k
-mv pre-install sommelier/hooks && mv foobar2000.desktop usr/share/applications && mv foobar2000.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform} $SNAPCRAFT_PART_INSTALL
+mv pre-install sommelier/hooks && mv foobar2000.desktop usr/share/applications && mv foobar2000.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform} $CRAFT_PART_INSTALL
