@@ -14,7 +14,7 @@ jobs:
         token: ${{ secrets.PAT }}
     - name: get-latest-version
       run: |
-        VERSION="$(wget 2>/dev/null http://www.foobar2000.org/download -qSO- | grep foobar2000_v | awk '{print $3}'|sed '2,3d;s|v||;s|</a><br/>||;s|</a>||')"
+        VERSION="$(wget 2>/dev/null http://www.foobar2000.org/download -qSO- | grep -Eo v[0-9].* | sed 's|v||;s|.exe| |g' | awk '{print $1}' | head -1)"
         last=$(tail -n1 .build.s | awk '{print $4}')
 
         if [ "$last" != "$VERSION" ]; then
