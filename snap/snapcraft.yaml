@@ -13,43 +13,42 @@ description: |
    *Open component architecture allowing third-party developers to extend functionality of the player.
 adopt-info: foobar2000
 
-confinement: strict
 grade: stable
-architectures:
-  - build-on: amd64
-base: core22
+confinement: strict
+base: core24
+platforms:
+  amd64:
 compression: lzo
+assumes:
+  - snapd2.62
 
 plugs:
   shmem:
     interface: shared-memory
     private: true
-  wine-runtime-c22:
+  wine-runtime-c24:
     interface: content
     target: $SNAP/wine-runtime
-    default-provider: wine-platform-runtime-core22
-  wine-9-devel:
+    default-provider: wine-platform-runtime-core24
+  wine-base-devel:
     interface: content
     target: $SNAP/wine-platform
-    default-provider: wine-platform-9-devel-core22
+    default-provider: wine-platform
 
 environment:
   WINEDLLOVERRIDES: "mscoree,mshtml="  # Prevent pop-ups about Wine Mono and Wine Gecko
-  WINEARCH: "win32"
   TRICKS: "wmp9 vcrun2017"
   RUN_EXE: "$SNAP_USER_DATA/foobar2000/foobar2000.exe"
   SOMMELIER_KEEP_CWD: "1"  # Don't change the working directory so relative paths still work
   NO_AT_BRIDGE: "1"  # Fix yad error Failed to connect to socket /tmp/dbus-xxx: No such file or directory
   DISABLE_WAYLAND: "1"  # Fix gtk decoration under wayland session
   SYSTEM_WGETRC: $SNAP/wine-runtime/etc/wgetrc
-  SOMMELIER_NO_THEME: 1
 
 apps:
   foobar2000:
     extensions: [gnome]
     command: bin/sommelier run-exe
     plugs:
-      - audio-playback
       - home
       - network
       - cups-control
@@ -101,7 +100,4 @@ parts:
   sommelier:
     plugin: make
     source: https://github.com/mmtrt/sommelier-core.git
-    source-branch: "core22"
-    build-packages:
-      - libc6-dev-i386
-      - gcc-multilib
+    source-branch: "core24"

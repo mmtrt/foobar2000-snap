@@ -6,9 +6,9 @@ name: stable
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches: [ test2 ]
   pull_request:
-    branches: [ master ]
+    branches: [ test2 ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -38,4 +38,4 @@ jobs:
       - name: Upload snap
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-        run: snapcraft upload --release=edge,stable *.snap
+        run: snapcraft upload --release=candidate *.snap
