@@ -100,4 +100,4 @@ parts:
   sommelier:
     plugin: make
     source: https://github.com/mmtrt/sommelier-core.git
-    source-branch: "core24"
+    source-branch: "tmp-core24-test"
