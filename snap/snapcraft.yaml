@@ -37,7 +37,6 @@ plugs:
 
 environment:
   WINEDLLOVERRIDES: "mscoree,mshtml="  # Prevent pop-ups about Wine Mono and Wine Gecko
-  TRICKS: "wmp9 vcrun2017"
   RUN_EXE: "$SNAP_USER_DATA/foobar2000/foobar2000.exe"
   SOMMELIER_KEEP_CWD: "1"  # Don't change the working directory so relative paths still work
 
