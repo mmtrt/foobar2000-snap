@@ -40,9 +40,6 @@ environment:
   TRICKS: "wmp9 vcrun2017"
   RUN_EXE: "$SNAP_USER_DATA/foobar2000/foobar2000.exe"
   SOMMELIER_KEEP_CWD: "1"  # Don't change the working directory so relative paths still work
-  NO_AT_BRIDGE: "1"  # Fix yad error Failed to connect to socket /tmp/dbus-xxx: No such file or directory
-  DISABLE_WAYLAND: "1"  # Fix gtk decoration under wayland session
-  SYSTEM_WGETRC: $SNAP/wine-runtime/etc/wgetrc
 
 apps:
   foobar2000:
@@ -85,8 +82,7 @@ parts:
     override-build: |
       craftctl default
       set -ex
-      ver=$(wget http://www.foobar2000.org/download -q -S -O - 2>&1 | grep -Eo v[0-9].* | sed 's|v||;s|.exe| |g' | awk '{print $1}' | head -1)
-      snapcraftctl set-version "$ver"
+      craftctl set version=$(wget http://www.foobar2000.org/download -q -S -O - 2>&1 | grep -Eo v[0-9].* | sed 's|v||;s|.exe| |g' | awk '{print $1}' | head -1)
       ./dl_f2k
     stage:
       - bin
