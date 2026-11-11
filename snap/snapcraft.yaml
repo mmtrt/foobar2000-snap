@@ -45,6 +45,9 @@ apps:
     extensions: [gnome]
     command: bin/sommelier run-exe
     plugs:
+      - audio-playback   # Auto-connects; talks to PipeWire/PulseAudio (fixes 0x80070490)
+      - pulseaudio       # Legacy sound-server fallback
+      - alsa             # Raw hardware access for power users who manually connect it
       - home
       - network
       - removable-media
@@ -60,6 +63,9 @@ apps:
     extensions: [gnome]
     command: bin/sommelier
     plugs:
+      - audio-playback
+      - pulseaudio
+      - alsa
       - home
       - network
       - removable-media
